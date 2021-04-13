@@ -3,6 +3,7 @@ package com.jdagnogo.myplace.di
 import com.jdagnogo.myplace.MyPlaceApplication
 import com.jdagnogo.myplace.di.modules.ActivityModule
 import com.jdagnogo.myplace.di.modules.ApplicationModule
+import com.jdagnogo.myplace.di.modules.RepositoryModule
 import com.jdagnogo.myplace.di.modules.ViewModelModule
 import dagger.BindsInstance
 import dagger.Component
@@ -14,6 +15,7 @@ import javax.inject.Singleton
         ApplicationModule::class,
         ActivityModule::class,
         ViewModelModule::class,
+        RepositoryModule::class,
         AndroidSupportInjectionModule::class
     ]
 )
