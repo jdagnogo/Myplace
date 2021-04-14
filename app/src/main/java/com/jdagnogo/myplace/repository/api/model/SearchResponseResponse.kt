@@ -2,6 +2,6 @@ package com.jdagnogo.myplace.repository.api.model
 
 import com.google.gson.annotations.SerializedName
 
-data class SearchResponse(
-    @SerializedName("response") val data : SearchResponseResponse
+data class SearchResponseResponse(
+        @SerializedName("venues") val venues : List<VenueResponse>
 )

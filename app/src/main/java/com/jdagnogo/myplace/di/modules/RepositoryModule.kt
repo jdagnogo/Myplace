@@ -24,9 +24,8 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideVenueRepository(
-    ): VenueRepository =
-        VenueRepository()
+    fun provideVenueRepository(venueApi: VenueApi): VenueRepository =
+        VenueRepository(venueApi)
 
     @Singleton
     @Provides

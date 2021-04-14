@@ -38,7 +38,7 @@ class HomeFragment : BaseFragment(){
     }
 
     override fun initViews() {
-
+viewModel.test()
     }
 
     override fun getFragmentTag(): String {
