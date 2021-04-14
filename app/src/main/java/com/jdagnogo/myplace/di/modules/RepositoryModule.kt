@@ -6,7 +6,10 @@ import com.jdagnogo.myplace.di.utils.API
 import com.jdagnogo.myplace.di.utils.AppContext
 import com.jdagnogo.myplace.repository.VenueRepository
 import com.jdagnogo.myplace.repository.api.VenueApi
+import com.jdagnogo.myplace.repository.api.VenueMapper
+import com.jdagnogo.myplace.repository.api.VenueRemoteData
 import com.jdagnogo.myplace.repository.data.MyPlaceDatabase
+import com.jdagnogo.myplace.repository.data.VenueDao
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -24,12 +27,24 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideVenueRepository(venueApi: VenueApi): VenueRepository =
-        VenueRepository(venueApi)
+    fun provideVenueRepository(
+        remoteData: VenueRemoteData,
+        venueDao: VenueDao
+    ): VenueRepository =
+        VenueRepository(remoteData, venueDao)
 
     @Singleton
     @Provides
     fun provideVenueDao(db: MyPlaceDatabase) = db.getVenueDao()
+
+    @Singleton
+    @Provides
+    fun provideVenueRemoteData(venueApi: VenueApi, venueMapper: VenueMapper) =
+        VenueRemoteData(venueApi, venueMapper)
+
+    @Singleton
+    @Provides
+    fun provideVenueMapper() = VenueMapper()
 
     @Provides
     @Singleton

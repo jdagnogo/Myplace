@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.jdagnogo.myplace.model.Venue
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface VenueDao {
@@ -12,7 +13,7 @@ interface VenueDao {
     suspend fun insertAll(repos: List<Venue>)
 
     @Query("SELECT * FROM venue")
-    fun getAll(): List<Venue>
+    fun getAll(): Flow<List<Venue>>
 
     @Query("DELETE FROM venue")
     suspend fun clear()
