@@ -27,6 +27,7 @@ class VenueViewHolder(view: View, var listener: VenueListener) :
                 listener.onClick(venue)
             }
             venue_title.text = venue.name
+            venue_address.text = venue.address
         }
     }
 }

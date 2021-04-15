@@ -1,6 +1,5 @@
 package com.jdagnogo.myplace.repository.api
 
-import android.os.Build
 import com.jdagnogo.myplace.repository.api.model.SearchResponse
 import retrofit2.http.GET
 import retrofit2.http.Query

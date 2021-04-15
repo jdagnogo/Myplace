@@ -10,7 +10,6 @@ import com.jdagnogo.myplace.ui.adapter.VenueListener
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,12 +19,11 @@ class MainViewModel @Inject constructor(var repository: VenueRepository) : ViewM
 
     fun searchVenue(query: String) {
         searchJob?.cancel()
-        val result = repository.getData(query).onStart {
-            view.displayLoader()
-        }.catch {
-            //todo : display error msg
-            val toto = 2
-        }
+        val result = repository.getData(query)
+            .catch {
+                searchJob?.cancel()
+                view.displayError("Oups.. something is wrong !")
+            }
         searchJob = viewModelScope.launch {
             result.collectLatest {
                 handleResource(it)
@@ -37,22 +35,46 @@ class MainViewModel @Inject constructor(var repository: VenueRepository) : ViewM
     private fun handleResource(result: Resource<List<Venue>>) {
         when (result.status) {
             Resource.Status.SUCCESS -> {
-                if (result.data?.isEmpty() == true){
-                    view.displayNoValue()
-                }else{
+                if (result.data?.isEmpty() == false) {
+                    view.displayError("No data")
+                } else {
                     view.onNewData(result.data)
                 }
-
             }
             Resource.Status.LOADING -> {
-                val toto = 2
+                view.displayLoader()
             }
             Resource.Status.ERROR -> {
+                handleError(result.code)
+            }
+        }
+    }
+
+    private fun handleError(code: String?) {
+        when (code) {
+            ERROR_400 -> {
+                view.displayError("Wrong Localization")
+            }
+            ERROR_403, ERROR_429 -> {
+                view.displayError("You have reached your limit")
+            }
+            ERROR_500 -> {
+                view.displayError("Internal server error")
+            }
+            else -> {
+                view.displayError("Oups.. something is wrong !")
             }
         }
     }
 
     override fun onClick(venue: Venue) {
 
+    }
+
+    companion object {
+        private const val ERROR_400 = "400"
+        private const val ERROR_403 = "403"
+        private const val ERROR_429 = "429"
+        private const val ERROR_500 = "500"
     }
 }

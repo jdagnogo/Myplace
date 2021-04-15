@@ -8,9 +8,9 @@ fun <T, A> resourceAsFlow(
     networkCall: suspend () -> Resource<A>,
     saveCallResource: suspend (A) -> Unit
 ) = flow {
+    emit(Resource.loading(null))
     // we push values we have in database
     emit(fetchFromLocal().map { Resource.success<T>(it) }.first())
-
     // then we ask the server for more refresh values
     val responseStatus = networkCall.invoke()
     if (responseStatus.status == Resource.Status.SUCCESS) {
@@ -20,9 +20,9 @@ fun <T, A> resourceAsFlow(
             Resource.success(dbData)
         })
     } else if (responseStatus.status == Resource.Status.ERROR) {
-        emit(Resource.error<T>(responseStatus.message!!))
+        emit(Resource.error<T>(responseStatus.code!!))
         emitAll(fetchFromLocal().map {
-            Resource.error(responseStatus.message, it)
+            Resource.error(responseStatus.code, it)
         })
     }
 }

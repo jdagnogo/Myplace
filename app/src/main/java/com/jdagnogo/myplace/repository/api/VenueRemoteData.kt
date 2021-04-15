@@ -17,7 +17,6 @@ class VenueRemoteData @Inject constructor(
         }
     }
 
-
     companion object {
         private const val CLIENT_SECRET = "MDYGC0JSXMROUFV3EZPARH4UJXOAKAVS3TVUZDTWENZC51SV"
         private const val CLIENT_ID = "X2E04VTFMIU4DYRWSPLN2NN1HUBQQ1R0IO4GCBY1WFVZU022"

@@ -7,5 +7,5 @@ interface VenueListView {
 
     fun displayLoader()
 
-    fun displayNoValue()
+    fun displayError(errorMessage : String)
 }

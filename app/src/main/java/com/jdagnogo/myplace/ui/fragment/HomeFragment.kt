@@ -29,6 +29,7 @@ class HomeFragment : BaseFragment(), VenueListView {
     private lateinit var binding: FragmentHomeBinding
 
     private lateinit var viewModel: MainViewModel
+
     override fun subscribeViewModel() {
         viewModel = ViewModelProvider(requireActivity(), viewModelFactory)
                 .get(MainViewModel::class.java)
@@ -80,7 +81,6 @@ class HomeFragment : BaseFragment(), VenueListView {
     override fun onNewData(venues: List<Venue>?) {
         venues?.let {
             binding.progressCircular.visibility = View.GONE
-            binding.venueList.visibility = View.VISIBLE
             adapter.submitList(it)
             Log.d("new data", it.firstOrNull().toString())
         }
@@ -88,9 +88,11 @@ class HomeFragment : BaseFragment(), VenueListView {
 
     override fun displayLoader() {
         binding.progressCircular.visibility = View.VISIBLE
-        binding.venueList.visibility = View.GONE
     }
 
-    override fun displayNoValue() {
+    override fun displayError(errorMessage: String) {
+        binding.progressCircular.visibility = View.GONE
+        binding.errorMessage.text = errorMessage
+        binding.errorMessage.visibility = View.VISIBLE
     }
 }
