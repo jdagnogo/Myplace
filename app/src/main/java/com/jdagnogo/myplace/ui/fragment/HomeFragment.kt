@@ -1,10 +1,7 @@
 package com.jdagnogo.myplace.ui.fragment
 
-import android.util.Log
 import android.view.KeyEvent
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -13,15 +10,15 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.jdagnogo.myplace.R
 import com.jdagnogo.myplace.databinding.FragmentHomeBinding
-import com.jdagnogo.myplace.model.Resource
 import com.jdagnogo.myplace.model.Venue
-import com.jdagnogo.myplace.ui.VenueListView
+import com.jdagnogo.myplace.ui.MainActivity
 import com.jdagnogo.myplace.ui.adapter.VenueAdapter
+import com.jdagnogo.myplace.ui.adapter.VenueListener
 import com.jdagnogo.myplace.viewmodel.MainViewModel
-import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
-class HomeFragment : BaseFragment(), VenueListView {
+class HomeFragment : BaseFragment() , VenueListener {
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
@@ -48,8 +45,21 @@ class HomeFragment : BaseFragment(), VenueListView {
 
     override fun initViews() {
         binding.venueList.adapter = adapter
-        adapter.listener = viewModel
-        viewModel.view = this
+        adapter.listener = this
+        viewModel.currentResult.observe(this, venuesObserver)
+        viewModel.errorMessage.observe(this, errorObserver)
+        viewModel.spinner.observe(this, Observer {
+            binding.progressCircular.visibility = if (it) View.VISIBLE else View.GONE
+        })
+
+        viewModel.snackbar.observe(viewLifecycleOwner, Observer{ text ->
+            text?.let {
+                Snackbar.make(binding.container, text, Snackbar.LENGTH_SHORT)
+                    .show()
+                viewModel.onSnackbarShown()
+            }
+        })
+
         binding.searchRepo.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_GO) {
                 viewModel.searchVenue(binding.searchRepo.text.toString())
@@ -68,8 +78,28 @@ class HomeFragment : BaseFragment(), VenueListView {
         }
     }
 
+    private val errorObserver = Observer<String> {
+        binding.errorMessage.text = it
+        binding.errorMessage.visibility = View.VISIBLE
+    }
+
+    private val venuesObserver = Observer<List<Venue>?> {
+        if (it?.isEmpty() == true){
+            binding.venueList.visibility = View.GONE
+        }else{
+            binding.errorMessage.visibility = View.GONE
+            binding.venueList.visibility = View.VISIBLE
+            adapter.submitList(it)
+        }
+    }
+
     override fun getFragmentTag(): String {
         return TAG
+    }
+
+    override fun onClick(venue: Venue) {
+        viewModel.currentVenueId = venue.id
+        (requireActivity() as MainActivity).onNavigationToFragment(VenueDetailsFragment.TAG)
     }
 
     companion object {
@@ -78,29 +108,5 @@ class HomeFragment : BaseFragment(), VenueListView {
         }
 
         const val TAG = "HomeFragment"
-    }
-
-    override fun onNewData(venues: List<Venue>?) {
-        venues?.let {
-            binding.progressCircular.visibility = View.GONE
-            binding.errorMessage.visibility = View.GONE
-            adapter.submitList(it)
-        }
-    }
-
-    override fun displayLoader() {
-        binding.progressCircular.visibility = View.VISIBLE
-    }
-
-    override fun displayError(errorMessage: String) {
-        binding.progressCircular.visibility = View.GONE
-        binding.errorMessage.text = errorMessage
-        binding.errorMessage.visibility = View.VISIBLE
-    }
-
-    override fun displayNoInternet() {
-        binding.progressCircular.visibility = View.GONE
-        Snackbar.make(binding.container, R.string.no_internet, Snackbar.LENGTH_SHORT)
-            .show()
     }
 }

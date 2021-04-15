@@ -5,10 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.jdagnogo.myplace.model.Venue
+import com.jdagnogo.myplace.model.VenueDetails
 
 @Database(
-    entities = [Venue::class],
-    version = 1,
+    entities = [Venue::class, VenueDetails::class],
+    version = 2,
     exportSchema = false
 )
 abstract class MyPlaceDatabase : RoomDatabase() {

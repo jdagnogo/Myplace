@@ -2,6 +2,7 @@ package com.jdagnogo.myplace.di.modules
 
 import com.jdagnogo.myplace.ui.MainActivity
 import com.jdagnogo.myplace.ui.fragment.HomeFragment
+import com.jdagnogo.myplace.ui.fragment.VenueDetailsFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -13,4 +14,7 @@ abstract class ActivityModule {
 
     @ContributesAndroidInjector()
     abstract fun contributeHomeFragment(): HomeFragment
+
+    @ContributesAndroidInjector()
+    abstract fun contributeVenueDetailsFragment(): VenueDetailsFragment
 }
