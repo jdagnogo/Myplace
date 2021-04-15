@@ -4,9 +4,9 @@ import com.jdagnogo.myplace.model.Venue
 import com.jdagnogo.myplace.repository.api.model.SearchResponse
 
 class VenueMapper {
-    fun toVenue(searchResponse: SearchResponse): List<Venue> {
+    fun toVenue(searchResponse: SearchResponse, query: String): List<Venue> {
         return searchResponse.data.venues.map {
-            Venue(it.id, it.name, it.location.address)
+            Venue(it.id, it.name, query, it.location.address)
         }
     }
 }

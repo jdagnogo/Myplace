@@ -8,5 +8,6 @@ import com.google.gson.annotations.SerializedName
 data class Venue(
     @PrimaryKey @field:SerializedName("id") val id: String = "",
     @field:SerializedName("name") val name: String = "",
+    @field:SerializedName("query") val query: String = "",
     @field:SerializedName("address") val address: String = ""
 )

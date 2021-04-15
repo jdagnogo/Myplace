@@ -12,8 +12,8 @@ interface VenueDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(repos: List<Venue>)
 
-    @Query("SELECT * FROM venue")
-    fun getAll(): Flow<List<Venue>>
+    @Query("SELECT * FROM venue WHERE `query` LIKE :queryString")
+    fun getAll(queryString: String): Flow<List<Venue>>
 
     @Query("DELETE FROM venue")
     suspend fun clear()

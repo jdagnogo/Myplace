@@ -8,10 +8,10 @@ class VenueRemoteData @Inject constructor(
     private val api: VenueApi,
     private val mapper: VenueMapper
 ) {
-    suspend fun getVenues(): Resource<List<Venue>> {
+    suspend fun getVenues(query: String): Resource<List<Venue>> {
         return try {
-            val result = api.getVenue(CLIENT_ID, CLIENT_SECRET, VERSION, "paris", RADIUS, LIMIT)
-            Resource.success(mapper.toVenue(result))
+            val result = api.getVenue(CLIENT_ID, CLIENT_SECRET, VERSION, query, RADIUS, LIMIT)
+            Resource.success(mapper.toVenue(result, query))
         } catch (e: Exception) {
             Resource.error(e.message ?: "", emptyList())
         }

@@ -15,8 +15,8 @@ class VenueRepository @Inject constructor(
 
     fun getData(query: String): Flow<Resource<List<Venue>>> {
         return resourceAsFlow(
-            fetchFromLocal = { dao.getAll() },
-            networkCall = { remoteData.getVenues() },
+            fetchFromLocal = { dao.getAll(query) },
+            networkCall = { remoteData.getVenues(query) },
             saveCallResource = { venues -> dao.insertAll(venues) })
     }
 }

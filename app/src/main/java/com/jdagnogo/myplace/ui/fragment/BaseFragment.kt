@@ -16,7 +16,7 @@ abstract class BaseFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         subscribeViewModel()
-        return initDataBiding(inflater, container)
+        return initViewBiding()
     }
 
     override fun onAttach(context: Context) {
@@ -31,7 +31,7 @@ abstract class BaseFragment : Fragment() {
 
     abstract fun subscribeViewModel()
     abstract fun setSupportInjection(): Fragment
-    abstract fun initDataBiding(inflater: LayoutInflater, container: ViewGroup?): View
+    abstract fun initViewBiding(): View
     abstract fun initViews()
     abstract fun getFragmentTag():String
 }
