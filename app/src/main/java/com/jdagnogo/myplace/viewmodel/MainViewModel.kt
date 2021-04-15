@@ -36,8 +36,6 @@ class MainViewModel @Inject constructor(var repository: VenueRepository) : ViewM
         when (result.status) {
             Resource.Status.SUCCESS -> {
                 if (result.data?.isEmpty() == false) {
-                    view.displayError("No data")
-                } else {
                     view.onNewData(result.data)
                 }
             }
@@ -61,6 +59,9 @@ class MainViewModel @Inject constructor(var repository: VenueRepository) : ViewM
             ERROR_500 -> {
                 view.displayError("Internal server error")
             }
+            ERROR_NO_INTERNET -> {
+                view.displayNoInternet()
+            }
             else -> {
                 view.displayError("Oups.. something is wrong !")
             }
@@ -72,9 +73,11 @@ class MainViewModel @Inject constructor(var repository: VenueRepository) : ViewM
     }
 
     companion object {
-        private const val ERROR_400 = "400"
-        private const val ERROR_403 = "403"
-        private const val ERROR_429 = "429"
-        private const val ERROR_500 = "500"
+        private const val ERROR_400 = "HTTP 400 "
+        private const val ERROR_403 = "HTTP 403"
+        private const val ERROR_429 = "HTTP 429"
+        private const val ERROR_500 = "HTTP 500"
+        private const val ERROR_NO_INTERNET =
+            "Unable to resolve host \"api.foursquare.com\": No address associated with hostname"
     }
 }

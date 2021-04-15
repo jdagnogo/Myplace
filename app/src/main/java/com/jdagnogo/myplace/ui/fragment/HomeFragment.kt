@@ -10,6 +10,8 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.Snackbar
+import com.jdagnogo.myplace.R
 import com.jdagnogo.myplace.databinding.FragmentHomeBinding
 import com.jdagnogo.myplace.model.Resource
 import com.jdagnogo.myplace.model.Venue
@@ -81,8 +83,8 @@ class HomeFragment : BaseFragment(), VenueListView {
     override fun onNewData(venues: List<Venue>?) {
         venues?.let {
             binding.progressCircular.visibility = View.GONE
+            binding.errorMessage.visibility = View.GONE
             adapter.submitList(it)
-            Log.d("new data", it.firstOrNull().toString())
         }
     }
 
@@ -94,5 +96,11 @@ class HomeFragment : BaseFragment(), VenueListView {
         binding.progressCircular.visibility = View.GONE
         binding.errorMessage.text = errorMessage
         binding.errorMessage.visibility = View.VISIBLE
+    }
+
+    override fun displayNoInternet() {
+        binding.progressCircular.visibility = View.GONE
+        Snackbar.make(binding.container, R.string.no_internet, Snackbar.LENGTH_SHORT)
+            .show()
     }
 }

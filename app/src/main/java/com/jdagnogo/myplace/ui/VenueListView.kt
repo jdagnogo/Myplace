@@ -8,4 +8,6 @@ interface VenueListView {
     fun displayLoader()
 
     fun displayError(errorMessage : String)
+
+    fun displayNoInternet()
 }
