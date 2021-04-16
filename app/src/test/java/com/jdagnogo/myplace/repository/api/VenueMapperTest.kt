@@ -71,7 +71,7 @@ class VenueMapperTest : TestCase() {
     fun `given an invalid searchResponse to toVenue should return an empty list `() {
         //no op
 
-        val result = sut.toVenue(searchApiResponse, FAKE_QUERY)
+        val result = sut.toVenue(SearchApiResponse(), FAKE_QUERY)
 
         assertTrue("should have been an empty list", result.isEmpty())
     }
