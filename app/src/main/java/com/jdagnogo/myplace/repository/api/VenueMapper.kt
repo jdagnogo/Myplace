@@ -1,5 +1,6 @@
 package com.jdagnogo.myplace.repository.api
 
+import androidx.annotation.VisibleForTesting
 import com.jdagnogo.myplace.model.Venue
 import com.jdagnogo.myplace.model.VenueDetails
 import com.jdagnogo.myplace.repository.api.model.PhotoResponse
@@ -25,10 +26,11 @@ class VenueMapper {
 
     private fun toPhoto(photos: PhotoResponse): String {
         val toto = photos.groups.firstOrNull()?.items?.firstOrNull()
-        return "${toto?.prefix}${toto?.suffix}"
+        return "${toto?.prefix?:""}${toto?.suffix?:""}"
     }
 
     companion object {
-        private const val DEFAULT_ADDRESS = "---"
+        @VisibleForTesting
+        const val DEFAULT_ADDRESS = "---"
     }
 }
