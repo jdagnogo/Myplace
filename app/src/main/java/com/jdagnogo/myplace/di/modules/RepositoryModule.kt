@@ -6,10 +6,12 @@ import com.jdagnogo.myplace.di.utils.API
 import com.jdagnogo.myplace.di.utils.AppContext
 import com.jdagnogo.myplace.repository.VenueRepository
 import com.jdagnogo.myplace.repository.api.VenueApi
+import com.jdagnogo.myplace.repository.api.VenueDetailsApi
 import com.jdagnogo.myplace.repository.api.VenueMapper
 import com.jdagnogo.myplace.repository.api.VenueRemoteData
 import com.jdagnogo.myplace.repository.data.MyPlaceDatabase
 import com.jdagnogo.myplace.repository.data.VenueDao
+import com.jdagnogo.myplace.repository.data.VenueDetailsDao
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -28,10 +30,11 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun provideVenueRepository(
-        remoteData: VenueRemoteData,
-        venueDao: VenueDao
+            remoteData: VenueRemoteData,
+            venueDao: VenueDao,
+            venueDetailsDao: VenueDetailsDao
     ): VenueRepository =
-        VenueRepository(remoteData, venueDao)
+            VenueRepository(remoteData, venueDao, venueDetailsDao)
 
     @Singleton
     @Provides
@@ -39,8 +42,12 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideVenueRemoteData(venueApi: VenueApi, venueMapper: VenueMapper) =
-        VenueRemoteData(venueApi, venueMapper)
+    fun provideVenueDetailsDao(db: MyPlaceDatabase) = db.getVenueDetailsDao()
+
+    @Singleton
+    @Provides
+    fun provideVenueRemoteData(venueApi: VenueApi, venueDetailsApi: VenueDetailsApi, venueMapper: VenueMapper) =
+            VenueRemoteData(venueApi, venueDetailsApi, venueMapper)
 
     @Singleton
     @Provides
@@ -70,10 +77,17 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideUserApi(
+    fun provideVenueApi(
         @API okhttpClient: OkHttpClient,
         gsonConverterFactory: GsonConverterFactory
     ) = createRetrofit(okhttpClient, gsonConverterFactory).create(VenueApi::class.java)
+
+    @Singleton
+    @Provides
+    fun provideVenueDetailsApi(
+            @API okhttpClient: OkHttpClient,
+            gsonConverterFactory: GsonConverterFactory
+    ) = createRetrofit(okhttpClient, gsonConverterFactory).create(VenueDetailsApi::class.java)
 
     private fun createRetrofit(
         okhttpClient: OkHttpClient, gsonConverterFactory: GsonConverterFactory

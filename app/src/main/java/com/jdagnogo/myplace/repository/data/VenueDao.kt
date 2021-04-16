@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface VenueDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(repos: List<Venue>)
+    suspend fun insertAll(venues: List<Venue>)
 
     @Query("SELECT * FROM venue WHERE `query` LIKE :queryString")
     fun getAll(queryString: String): Flow<List<Venue>>

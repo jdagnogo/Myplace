@@ -41,25 +41,13 @@
         app:layout_constraintTop_toBottomOf="@+id/search_bar"
         tools:listitem="@layout/item_venue" />
 
-    <ProgressBar
-        android:id="@+id/progress_circular"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <include
+        layout="@layout/error_view"
+        android:id="@+id/error_view"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/error_message"
-        android:layout_width="wrap_content"
-        android:textSize="20sp"
-        android:visibility="gone"
-        android:textStyle="bold"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

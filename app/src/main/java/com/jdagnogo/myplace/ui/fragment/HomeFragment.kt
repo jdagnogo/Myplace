@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
-import com.jdagnogo.myplace.R
 import com.jdagnogo.myplace.databinding.FragmentHomeBinding
 import com.jdagnogo.myplace.model.Venue
 import com.jdagnogo.myplace.ui.MainActivity
@@ -49,7 +48,7 @@ class HomeFragment : BaseFragment() , VenueListener {
         viewModel.currentResult.observe(this, venuesObserver)
         viewModel.errorMessage.observe(this, errorObserver)
         viewModel.spinner.observe(this, Observer {
-            binding.progressCircular.visibility = if (it) View.VISIBLE else View.GONE
+            binding.errorView.progressCircular.visibility = if (it) View.VISIBLE else View.GONE
         })
 
         viewModel.snackbar.observe(viewLifecycleOwner, Observer{ text ->
@@ -79,15 +78,19 @@ class HomeFragment : BaseFragment() , VenueListener {
     }
 
     private val errorObserver = Observer<String> {
-        binding.errorMessage.text = it
-        binding.errorMessage.visibility = View.VISIBLE
+        with(binding.errorView) {
+            if (it.isNotEmpty()) {
+                errorMessage.text = it
+                errorMessage.visibility = View.VISIBLE
+            }
+        }
     }
 
     private val venuesObserver = Observer<List<Venue>?> {
         if (it?.isEmpty() == true){
             binding.venueList.visibility = View.GONE
         }else{
-            binding.errorMessage.visibility = View.GONE
+            binding.errorView.errorMessage.visibility = View.GONE
             binding.venueList.visibility = View.VISIBLE
             adapter.submitList(it)
         }

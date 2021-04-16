@@ -14,6 +14,7 @@ import com.jdagnogo.myplace.model.VenueDetails
 )
 abstract class MyPlaceDatabase : RoomDatabase() {
     abstract fun getVenueDao(): VenueDao
+    abstract fun getVenueDetailsDao(): VenueDetailsDao
 
     companion object {
         private const val DB_NAME = "MyPlace.db"

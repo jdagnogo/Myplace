@@ -3,9 +3,12 @@ package com.jdagnogo.myplace.ui.fragment
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.jdagnogo.myplace.databinding.FragmentHomeBinding
+import com.google.android.material.snackbar.Snackbar
 import com.jdagnogo.myplace.databinding.FragmentVenueDetailsBinding
+import com.jdagnogo.myplace.model.Venue
+import com.jdagnogo.myplace.model.VenueDetails
 import com.jdagnogo.myplace.viewmodel.MainViewModel
 import javax.inject.Inject
 
@@ -33,7 +36,36 @@ class VenueDetailsFragment : BaseFragment(){
     }
 
     override fun initViews() {
+        viewModel.getVenueDetails()
+        viewModel.currentVenueDetails.observe(this, venueDetailsObserver)
+        viewModel.errorMessage.observe(this, errorObserver)
+        viewModel.snackbar.observe(viewLifecycleOwner, Observer{ text ->
+            text?.let {
+                Snackbar.make(binding.container, text, Snackbar.LENGTH_SHORT)
+                        .show()
+                viewModel.onSnackbarShown()
+            }
+        })
+    }
 
+    private val venueDetailsObserver = Observer<VenueDetails?> {
+        binding.venueTitle.text = it?.name
+        binding.venueDescription.text = it?.description
+        binding.venueFacebook.text = it?.facebook
+        binding.venueLocation.text = it?.location
+        binding.venuePhone.text = it?.phone
+        binding.venuePhoto.text = it?.photo
+        binding.venueTwitter.text = it?.twitter
+        binding.venueRating.text = it?.rating.toString()
+    }
+
+    private val errorObserver = Observer<String> {
+        with(binding.errorView) {
+            if (it.isNotEmpty()) {
+                errorMessage.text = it
+                errorMessage.visibility = View.VISIBLE
+            }
+        }
     }
 
     override fun getFragmentTag(): String {
