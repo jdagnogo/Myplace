@@ -29,10 +29,10 @@ class VenueRemoteData @Inject constructor(
     }
 
     companion object {
-        private const val CLIENT_SECRET = "MDYGC0JSXMROUFV3EZPARH4UJXOAKAVS3TVUZDTWENZC51SV"
-        private const val CLIENT_ID = "X2E04VTFMIU4DYRWSPLN2NN1HUBQQ1R0IO4GCBY1WFVZU022"
-        private const val LIMIT = "10"
-        private const val RADIUS = "1000"
-        private const val VERSION = "20210425"
+        const val CLIENT_SECRET = "MDYGC0JSXMROUFV3EZPARH4UJXOAKAVS3TVUZDTWENZC51SV"
+        val CLIENT_ID = "X2E04VTFMIU4DYRWSPLN2NN1HUBQQ1R0IO4GCBY1WFVZU022"
+        const val LIMIT = "10"
+        val RADIUS = "1000"
+        const val VERSION = "20210425"
     }
 }
