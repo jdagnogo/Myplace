@@ -13,5 +13,5 @@ interface VenueDetailsDao {
     suspend fun insert(venueDetails: VenueDetails)
 
     @Query("SELECT * FROM venue_details WHERE `id` LIKE :venueId")
-    fun getVenueDetails(venueId: String): Flow<VenueDetails>
+    fun getVenueDetails(venueId: String): Flow<VenueDetails?>
 }

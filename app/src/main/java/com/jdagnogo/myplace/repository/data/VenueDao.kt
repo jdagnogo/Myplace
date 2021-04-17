@@ -14,7 +14,4 @@ interface VenueDao {
 
     @Query("SELECT * FROM venue WHERE `query` LIKE :queryString")
     fun getAll(queryString: String): Flow<List<Venue>>
-
-    @Query("DELETE FROM venue")
-    suspend fun clear()
 }

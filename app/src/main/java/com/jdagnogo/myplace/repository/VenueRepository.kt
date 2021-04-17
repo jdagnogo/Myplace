@@ -22,7 +22,7 @@ class VenueRepository @Inject constructor(
             saveCallResource = { venues -> dao.insertAll(venues) })
     }
 
-    fun getVenueDetails(id : String) :Flow<Resource<VenueDetails>>{
+    fun getVenueDetails(id : String) :Flow<Resource<VenueDetails?>>{
         return resourceAsFlow(
                 fetchFromLocal = { venueDetailsDao.getVenueDetails(id) },
                 networkCall = { remoteData.getVenueDetails(id) },
