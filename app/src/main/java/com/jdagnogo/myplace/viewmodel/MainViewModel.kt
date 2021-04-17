@@ -1,5 +1,6 @@
 package com.jdagnogo.myplace.viewmodel
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,8 +17,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(var repository: VenueRepository) : ViewModel() {
-    private var searchJob: Job? = null
-    private var venueDetailsJob: Job? = null
+    @VisibleForTesting var searchJob: Job? = null
+    @VisibleForTesting var venueDetailsJob: Job? = null
     var currentVenueId: String? = null
 
     private val _currentResult = MutableLiveData<List<Venue>?>()
@@ -42,10 +43,15 @@ class MainViewModel @Inject constructor(var repository: VenueRepository) : ViewM
     /**
      * Request a snackbar to display a string.
      */
-    private val _snackbar = MutableLiveData<Int?>()
+    @VisibleForTesting
+    val _snackbar = MutableLiveData<Int?>()
     val snackbar: LiveData<Int?>
         get() = _snackbar
 
+    /**
+     * We want to display the snackbar only once.
+     * So after that the value is displayed, we should reset the value
+     */
     fun onSnackbarShown() {
         _snackbar.value = null
     }

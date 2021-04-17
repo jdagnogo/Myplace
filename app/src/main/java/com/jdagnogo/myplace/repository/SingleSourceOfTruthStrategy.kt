@@ -1,7 +1,9 @@
 package com.jdagnogo.myplace.repository
 
 import com.jdagnogo.myplace.model.Resource
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.withContext
 
 fun <T, A> resourceAsFlow(
     fetchFromLocal: () -> Flow<T>,

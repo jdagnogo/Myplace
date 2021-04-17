@@ -82,4 +82,7 @@ dependencies {
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:${mockitoKotlinVersion}"
     androidTestImplementation "org.mockito:mockito-android:${mockitoAndroidVersion}"
     testImplementation "org.mockito:mockito-inline:${mockitoInlineVersion}"
+    testImplementation "androidx.arch.core:core-testing:${coreTestingVersion}"
+    testImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_android_version"
 }
