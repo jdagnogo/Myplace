@@ -29,8 +29,8 @@ class MainViewModel @Inject constructor(var repository: VenueRepository) : ViewM
     val currentVenueDetails: LiveData<VenueDetails?>
         get() = _currentVenueDetails
 
-    private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String>
+    private val _errorMessage = MutableLiveData<Int>()
+    val errorMessage: LiveData<Int>
         get() = _errorMessage
 
     /**
@@ -80,14 +80,14 @@ class MainViewModel @Inject constructor(var repository: VenueRepository) : ViewM
                 .catch {
                     searchJob?.cancel()
                     _spinner.postValue(false)
-                    _errorMessage.postValue("Oups.. something is wrong !")
+                    _errorMessage.postValue(R.string.unknown_error)
                 }
         searchJob = viewModelScope.launch {
             result.collectLatest {
                 handleResource(it) {
                     if (it.data?.isEmpty() == false) {
                         _spinner.postValue(false)
-                        _errorMessage.postValue("")
+                        _errorMessage.postValue(0)
                         _currentResult.postValue(it.data)
                     }
                 }
@@ -103,7 +103,7 @@ class MainViewModel @Inject constructor(var repository: VenueRepository) : ViewM
             Resource.Status.LOADING -> {
                 _spinner.postValue(true)
             }
-            Resource.Status.ERROR -> {
+            else -> {
                 handleError(result.code)
             }
         }
@@ -118,28 +118,27 @@ class MainViewModel @Inject constructor(var repository: VenueRepository) : ViewM
         _currentResult.postValue(null)
         val msg = when (code) {
             ERROR_400 -> {
-                "Wrong Localization"
+                R.string.wrong_location
             }
             ERROR_403, ERROR_429 -> {
-                "You have reached your limit"
+                R.string.limit
             }
             ERROR_500 -> {
-                "Internal server error"
+                R.string.internal_error
             }
             else -> {
-                "Oups.. something is wrong !"
+                R.string.unknown_error
             }
         }
         _errorMessage.postValue(msg)
     }
 
     companion object {
-        //Todo : enum
-        private const val ERROR_400 = "HTTP 400 "
-        private const val ERROR_403 = "HTTP 403"
-        private const val ERROR_429 = "HTTP 429"
-        private const val ERROR_500 = "HTTP 500"
-        private const val ERROR_NO_INTERNET =
+        const val ERROR_400 = "HTTP 400 "
+        const val ERROR_403 = "HTTP 403"
+        const val ERROR_429 = "HTTP 429"
+        const val ERROR_500 = "HTTP 500"
+        const val ERROR_NO_INTERNET =
             "Unable to resolve host \"api.foursquare.com\": No address associated with hostname"
     }
 }

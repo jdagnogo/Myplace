@@ -59,10 +59,10 @@ class VenueDetailsFragment : BaseFragment(){
         binding.venueRating.text = it?.rating.toString()
     }
 
-    private val errorObserver = Observer<String> {
+    private val errorObserver = Observer<Int> {
         with(binding.errorView) {
-            if (it.isNotEmpty()) {
-                errorMessage.text = it
+            if (it !=0) {
+                errorMessage.text = getString(it)
                 errorMessage.visibility = View.VISIBLE
             }
         }

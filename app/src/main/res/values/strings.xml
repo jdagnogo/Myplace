@@ -2,4 +2,8 @@
     <string name="app_name">MyPlace</string>
     <string name="search_hint">Search for a place</string>
     <string name="no_internet">No internet</string>
+    <string name="wrong_location">Wrong Localization</string>
+    <string name="limit">You have reached your limit</string>
+    <string name="internal_error">Internal server error</string>
+    <string name="unknown_error">Oups.. something is wrong !</string>
 </resources>
