@@ -3,6 +3,7 @@ package com.jdagnogo.myplace.ui.fragment
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import androidx.annotation.VisibleForTesting
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -26,7 +27,7 @@ class HomeFragment : BaseFragment() , VenueListener {
 
     private lateinit var binding: FragmentHomeBinding
 
-    private lateinit var viewModel: MainViewModel
+    @VisibleForTesting lateinit var viewModel: MainViewModel
 
     override fun subscribeViewModel() {
         viewModel = ViewModelProvider(requireActivity(), viewModelFactory)
