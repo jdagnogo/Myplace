@@ -8,8 +8,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import dagger.android.support.AndroidSupportInjection
 
+/**
+ * This class will reduce the code that we have to generate and focus only on the important one
+ */
 abstract class BaseFragment : Fragment() {
-
+    /**
+     * We are using ViewBinding
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -29,9 +34,30 @@ abstract class BaseFragment : Fragment() {
         initViews()
     }
 
+    /**
+     * In this method, we should handle all viewmodel stuff
+     * like init
+     */
     abstract fun subscribeViewModel()
+
+    /**
+     * This method is needed by Dagger. We have to give the instance of the current fragment
+     */
     abstract fun setSupportInjection(): Fragment
+
+    /**
+     * In this method, we should init the Viewbinding
+     * like
+     */
     abstract fun initViewBiding(): View
+    /**
+     * In this method, we should handle all view stuff
+     * like
+     */
     abstract fun initViews()
+
+    /**
+     * We need the tag in order to  retrieve the fragment from the fragmentManager
+     */
     abstract fun getFragmentTag():String
 }

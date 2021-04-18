@@ -24,6 +24,9 @@ class VenueMapper {
         }
     }
 
+    /**
+     * to retrive the photo we need the suffix and the prefix
+     */
     private fun toPhoto(photos: PhotoResponse): String {
         val toto = photos.groups.firstOrNull()?.items?.firstOrNull()
         return "${toto?.prefix?:""}${toto?.suffix?:""}"

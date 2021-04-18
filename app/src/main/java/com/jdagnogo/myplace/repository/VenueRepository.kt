@@ -9,6 +9,9 @@ import com.jdagnogo.myplace.repository.data.VenueDetailsDao
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
+/**
+ * Our repository is using the SingleSourceOfTruthStrategy in order to trust only the database
+ */
 class VenueRepository @Inject constructor(
     private val remoteData: VenueRemoteData,
     private val dao: VenueDao,

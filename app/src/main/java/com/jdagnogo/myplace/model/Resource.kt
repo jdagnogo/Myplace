@@ -1,5 +1,11 @@
 package com.jdagnogo.myplace.model
 
+/**
+ * This class will hold the state of the data
+ *  SUCCESS when we have some data. Note that the data can be empty
+ *  ERROR : an pb happened and we will have the code
+ *  LOADING: When we are waiting for the data
+ */
 data class Resource<out T>(val status: Status, val data: T?, val code: String?) {
 
     enum class Status {

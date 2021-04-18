@@ -41,7 +41,8 @@ class MainViewModel @Inject constructor(var repository: VenueRepository) : ViewM
         get() = _spinner
 
     /**
-     * Request a snackbar to display a string.
+     * Request a snackbar to display a message.
+     * This is used to otify that we dont have internet
      */
     @VisibleForTesting
     val _snackbar = MutableLiveData<Int?>()
@@ -95,6 +96,11 @@ class MainViewModel @Inject constructor(var repository: VenueRepository) : ViewM
         }
     }
 
+    /**
+     * A method to handle the status of the ressource
+     * Note that for LOADING and ERROR we have the same behavior
+     * But with SUCCESS, the function should decide what to do
+     */
     private fun <T> handleResource(result: Resource<T>, function: () -> (Unit)) {
         when (result.status) {
             Resource.Status.SUCCESS -> {
@@ -109,6 +115,11 @@ class MainViewModel @Inject constructor(var repository: VenueRepository) : ViewM
         }
     }
 
+    /**
+     * This method will have all error cases.
+     * We will trigger the snackbar when we see the no internet error
+     * Or we will post a value in _errorMessage with the correct message
+     */
     private fun handleError(code: String?) {
         _spinner.postValue(false)
         if (code == ERROR_NO_INTERNET) {

@@ -58,7 +58,10 @@ class VenueDetailsFragment : BaseFragment(){
         binding.venueTwitter.text = it?.twitter
         binding.venueRating.text = it?.rating.toString()
     }
-
+    /**
+     * This listener will be trigger everytime an error message should be display
+     * use  _errorMessage.postValue(msg) to trigger it
+     */
     private val errorObserver = Observer<Int> {
         with(binding.errorView) {
             if (it !=0) {

@@ -9,9 +9,17 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface VenueDetailsDao {
+    /**
+     * this method will insert the data in the Room database
+     * Important: in case that the data have the same id, it will replace the old one
+     */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(venueDetails: VenueDetails)
 
+    /**
+     * this method will retrieve the data in the Room database
+     * It will return only the data with the correct id
+     */
     @Query("SELECT * FROM venue_details WHERE `id` LIKE :venueId")
     fun getVenueDetails(venueId: String): Flow<VenueDetails?>
 }

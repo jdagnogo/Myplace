@@ -5,6 +5,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 
+/**
+ * This method allows us to trust only the database
+ * We will first push an loading state
+ * then ask the data from the database and push them
+ * then ask the data from the api
+ * if the data from the server are valid we update the database then push the data from the database
+ * if the data from the server are not valid we display the error
+ *
+ */
 fun <T, A> resourceAsFlow(
     fetchFromLocal: () -> Flow<T>,
     networkCall: suspend () -> Resource<A>,

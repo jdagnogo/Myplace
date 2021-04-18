@@ -78,6 +78,10 @@ class HomeFragment : BaseFragment() , VenueListener {
         }
     }
 
+    /**
+     * This listener will be trigger everytime an error message should be display
+     * use  _errorMessage.postValue(msg) to trigger it
+     */
     private val errorObserver = Observer<Int> {
         with(binding.errorView) {
             if (it != 0) {
@@ -86,7 +90,10 @@ class HomeFragment : BaseFragment() , VenueListener {
             }
         }
     }
-
+    /**
+     * This listener will be trigger everytime an error message should be display
+     * use  _currentResult.postValue(venues) to trigger it
+     */
     private val venuesObserver = Observer<List<Venue>?> {
         if (it?.isEmpty() == true){
             binding.venueList.visibility = View.GONE
