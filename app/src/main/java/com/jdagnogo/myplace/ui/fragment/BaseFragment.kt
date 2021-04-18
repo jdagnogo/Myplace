@@ -21,6 +21,7 @@ abstract class BaseFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         subscribeViewModel()
+        observeValues()
         return initViewBiding()
     }
 
@@ -39,6 +40,11 @@ abstract class BaseFragment : Fragment() {
      * like init
      */
     abstract fun subscribeViewModel()
+
+    /**
+     * In this method, we should observe all livedata
+     */
+    abstract fun observeValues()
 
     /**
      * This method is needed by Dagger. We have to give the instance of the current fragment

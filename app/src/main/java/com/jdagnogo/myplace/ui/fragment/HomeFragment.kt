@@ -32,6 +32,7 @@ class HomeFragment : BaseFragment() , VenueListener {
     override fun subscribeViewModel() {
         viewModel = ViewModelProvider(requireActivity(), viewModelFactory)
                 .get(MainViewModel::class.java)
+        observeValues()
     }
 
     override fun setSupportInjection(): Fragment {
@@ -46,19 +47,6 @@ class HomeFragment : BaseFragment() , VenueListener {
     override fun initViews() {
         binding.venueList.adapter = adapter
         adapter.listener = this
-        viewModel.currentResult.observe(this, venuesObserver)
-        viewModel.errorMessage.observe(this, errorObserver)
-        viewModel.spinner.observe(this, Observer {
-            binding.errorView.progressCircular.visibility = if (it) View.VISIBLE else View.GONE
-        })
-
-        viewModel.snackbar.observe(viewLifecycleOwner, Observer{ text ->
-            text?.let {
-                Snackbar.make(binding.container, text, Snackbar.LENGTH_SHORT)
-                    .show()
-                viewModel.onSnackbarShown()
-            }
-        })
 
         binding.searchRepo.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_GO) {
@@ -76,6 +64,21 @@ class HomeFragment : BaseFragment() , VenueListener {
                 false
             }
         }
+    }
+
+    override fun observeValues(){
+        viewModel.currentResult.observe(this, venuesObserver)
+        viewModel.errorMessage.observe(this, errorObserver)
+        viewModel.spinner.observe(this, Observer {
+            binding.errorView.progressCircular.visibility = if (it) View.VISIBLE else View.GONE
+        })
+        viewModel.snackbar.observe(viewLifecycleOwner, Observer{ text ->
+            text?.let {
+                Snackbar.make(binding.container, text, Snackbar.LENGTH_SHORT)
+                        .show()
+                viewModel.onSnackbarShown()
+            }
+        })
     }
 
     /**

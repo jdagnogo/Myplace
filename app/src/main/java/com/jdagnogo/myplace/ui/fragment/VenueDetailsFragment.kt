@@ -26,6 +26,18 @@ class VenueDetailsFragment : BaseFragment(){
             .get(MainViewModel::class.java)
     }
 
+    override fun observeValues() {
+        viewModel.currentVenueDetails.observe(this, venueDetailsObserver)
+        viewModel.errorMessage.observe(this, errorObserver)
+        viewModel.snackbar.observe(viewLifecycleOwner, Observer{ text ->
+            text?.let {
+                Snackbar.make(binding.container, text, Snackbar.LENGTH_SHORT)
+                        .show()
+                viewModel.onSnackbarShown()
+            }
+        })
+    }
+
     override fun setSupportInjection(): Fragment {
         return this
     }
@@ -37,15 +49,6 @@ class VenueDetailsFragment : BaseFragment(){
 
     override fun initViews() {
         viewModel.getVenueDetails()
-        viewModel.currentVenueDetails.observe(this, venueDetailsObserver)
-        viewModel.errorMessage.observe(this, errorObserver)
-        viewModel.snackbar.observe(viewLifecycleOwner, Observer{ text ->
-            text?.let {
-                Snackbar.make(binding.container, text, Snackbar.LENGTH_SHORT)
-                        .show()
-                viewModel.onSnackbarShown()
-            }
-        })
     }
 
     private val venueDetailsObserver = Observer<VenueDetails?> {
