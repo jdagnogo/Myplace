@@ -2,17 +2,23 @@ package com.jdagnogo.myplace.ui.fragment
 
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ListView
+import androidx.core.view.get
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
 import com.jdagnogo.myplace.R
 import com.jdagnogo.myplace.ui.MainActivity
+import org.hamcrest.CoreMatchers.allOf
+import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers
@@ -49,12 +55,15 @@ class HomeFragmentTest {
     }
 
     @Test
-    fun test_searching_milan_should_get_the_venue() {
+    fun test_searching_milan_should_display_the_correct_name_and_title() {
         search("milan")
 
         Thread.sleep(3000)
 
-        isTextViewDisplayed(R.id.venue_title, "Piazza del Duomo", R.id.venue_container)
+        onView(allOf(withId(R.id.venue_title), withText("Cracco Cafè"))).check(matches(isDisplayed()))
+        onView(allOf(withId(R.id.venue_address), withText("Galleria Vittorio Emanuele"))).check(matches(isDisplayed()))
+        // error text should not be displayed
+        onView(withId(R.id.error_message)).check(matches(ViewMatchers.withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
     }
 
     @Test
@@ -63,59 +72,44 @@ class HomeFragmentTest {
 
         Thread.sleep(3000)
 
-        isTextViewDisplayed(R.id.error_message, "Wrong Localization", R.id.error_view)
+        onView(allOf(withId(R.id.error_message), withText("Wrong Localization"))).check(matches(isDisplayed()))
     }
 
-    private fun isTextViewDisplayed(id: Int, withName: String, parentId: Int) {
-        val textView = onView(
-            Matchers.allOf(
-                withId(id), ViewMatchers.withText(withName),
-                ViewMatchers.withParent(
+    companion object{
+        fun search(query: String) {
+            val editText = Espresso.onView(
                     Matchers.allOf(
-                        withId(parentId),
-                        ViewMatchers.withParent(withId(R.id.container))
+                            ViewMatchers.withId(R.id.search_repo),
+                            childAtPosition(
+                                    childAtPosition(
+                                            ViewMatchers.withId(R.id.search_bar),
+                                            0
+                                    ),
+                                    0
+                            ),
+                            ViewMatchers.isDisplayed()
                     )
-                ),
-                ViewMatchers.isDisplayed()
             )
-        )
-        textView.check(ViewAssertions.matches(ViewMatchers.withText(withName)))
-    }
+            editText.perform(ViewActions.replaceText(query), ViewActions.closeSoftKeyboard())
+            editText.perform(ViewActions.pressImeActionButton())
+        }
 
-    private fun search(query: String) {
-        val editText = Espresso.onView(
-            Matchers.allOf(
-                ViewMatchers.withId(R.id.search_repo),
-                childAtPosition(
-                    childAtPosition(
-                        ViewMatchers.withId(R.id.search_bar),
-                        0
-                    ),
-                    0
-                ),
-                ViewMatchers.isDisplayed()
-            )
-        )
-        editText.perform(ViewActions.replaceText(query), ViewActions.closeSoftKeyboard())
-        editText.perform(ViewActions.pressImeActionButton())
-    }
+        fun childAtPosition(
+                parentMatcher: Matcher<View>, position: Int
+        ): Matcher<View> {
 
-    private fun childAtPosition(
-        parentMatcher: Matcher<View>, position: Int
-    ): Matcher<View> {
+            return object : TypeSafeMatcher<View>() {
+                override fun describeTo(description: Description) {
+                    description.appendText("Child at position $position in parent ")
+                    parentMatcher.describeTo(description)
+                }
 
-        return object : TypeSafeMatcher<View>() {
-            override fun describeTo(description: Description) {
-                description.appendText("Child at position $position in parent ")
-                parentMatcher.describeTo(description)
-            }
-
-            public override fun matchesSafely(view: View): Boolean {
-                val parent = view.parent
-                return parent is ViewGroup && parentMatcher.matches(parent)
-                        && view == parent.getChildAt(position)
+                public override fun matchesSafely(view: View): Boolean {
+                    val parent = view.parent
+                    return parent is ViewGroup && parentMatcher.matches(parent)
+                            && view == parent.getChildAt(position)
+                }
             }
         }
     }
-
 }
