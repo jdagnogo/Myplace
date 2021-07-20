@@ -39,8 +39,8 @@ class VenueDaoTest {
     @Throws(Exception::class)
     fun insertOneShouldCreateOnly() = runBlocking {
         val venues = listOf(Venue(query = FAKE_NAME))
-        sut.insertAll(venues)
 
+        sut.insertAll(venues)
         val result = sut.getAll(FAKE_NAME).first()
 
         assertTrue("",result == venues)

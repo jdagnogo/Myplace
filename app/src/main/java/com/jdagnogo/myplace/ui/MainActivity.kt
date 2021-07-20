@@ -3,7 +3,6 @@ package com.jdagnogo.myplace.ui
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import com.jdagnogo.myplace.R
-import com.jdagnogo.myplace.model.VenueDetails
 import com.jdagnogo.myplace.ui.fragment.BaseFragment
 import com.jdagnogo.myplace.ui.fragment.HomeFragment
 import com.jdagnogo.myplace.ui.fragment.VenueDetailsFragment

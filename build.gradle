@@ -11,7 +11,7 @@ buildscript {
         room_version = '2.2.6'
         lottieVersion = '3.3.1'
         lifecycleVersion = '2.3.0'
-        roomVersion = '2.2.6'
+        roomVersion = '2.2.5'
         retrofitVersion = '2.7.2'
         okhttpLoggingInterceptorVersion = '4.9.0'
         coroutinesVersion = '1.4.3'

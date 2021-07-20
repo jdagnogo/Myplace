@@ -66,18 +66,6 @@ class MainViewModelTest : TestCase() {
             assertTrue(value == venueDetails)
             assertTrue(spinnerValue.not())
         }
-    @Test
-    fun `given an error in the repository, calling getVenueDetails should cancel the job`() =
-        mainCoroutineRule.testDispatcher.runBlockingTest {
-            sut.currentVenueId = FAKE_STRING
-            given(repository.getVenueDetails(FAKE_STRING)).willAnswer {
-                throw IOException()
-            }
-
-            sut.getVenueDetails()
-
-            assertTrue(sut.venueDetailsJob?.isCancelled == true)
-        }
     //endregion
 
     //region searchVenue

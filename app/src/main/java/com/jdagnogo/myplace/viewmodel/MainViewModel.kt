@@ -21,6 +21,7 @@ class MainViewModel @Inject constructor(var repository: VenueRepository) : ViewM
     @VisibleForTesting var venueDetailsJob: Job? = null
     var currentVenueId: String? = null
 
+
     private val _currentResult = MutableLiveData<List<Venue>?>()
     val currentResult: LiveData<List<Venue>?>
         get() = _currentResult
